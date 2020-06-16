@@ -15,29 +15,15 @@ s3 = session.client(
 
 
 def handler(event, context):
-    s3.put_object(
-        Bucket=os.getenv('YC_BUCKET'),
-        Key='111',
-        Body='222',
-    )
     data = json.loads(event["body"])
     body = {
         'method': 'sendMessage',
         'text': data['message']['text'],
         'chat_id': data['message']['chat']['id'],
     }
-    s3.put_object(
-        Bucket=os.getenv('YC_BUCKET'),
-        Key=data['message']['chat']['id'],
-        Body=data['message']['text'],
-    )
     return {
         "statusCode": 200,
         "headers": {'Content-Type': 'application/json'},
         "body": json.dumps(body),
         "isBase64Encoded": False
     }
-
-
-if __name__ == "__main__":
-    pass
