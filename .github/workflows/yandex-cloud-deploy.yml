@@ -1,0 +1,37 @@
+name: Yandex.Cloud CI
+on: push
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v1
+      - uses: whynothugo/python-linting@master
+  testing:
+    needs: [linting]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+      - name: Discovering test
+        run: python3 -m unittest discover -v tests/
+  deploy:
+    needs: [linting, testing]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: goodsmileduck/yandex-serverless-action@master
+        env:
+          SOURCE_DIR: '.'
+          FUNCTION_ID: ${{ secrets.YC_FUNCTION_ID }}
+          RUNTIME: 'python37'
+          ENTRYPOINT: 'main.handler'
+          ENVIRONMENT: DEBUG=True
+          CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
+          FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
+          TOKEN: ${{ secrets.YC_TOKEN }}
+          BUCKET: ${{ secrets.YC_BUCKET }}
