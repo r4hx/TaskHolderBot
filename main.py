@@ -19,7 +19,7 @@ def handler(event, context):
     body = {
         'method': 'sendMessage',
         'text': data['message']['text'],
-        'from': data['message']['from']['id'],
+        'chat_id': data['message']['from']['id'],
     }
     return {
         "statusCode": 200,
