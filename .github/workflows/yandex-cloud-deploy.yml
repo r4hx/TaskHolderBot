@@ -25,13 +25,13 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: goodsmileduck/yandex-serverless-action@master
-        env:
-          SOURCE_DIR: '.'
-          FUNCTION_ID: ${{ secrets.YC_FUNCTION_ID }}
-          RUNTIME: 'python37'
-          ENTRYPOINT: 'main.handler'
-          ENVIRONMENT: DEBUG=True
-          CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
-          FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
-          TOKEN: ${{ secrets.YC_TOKEN }}
-          BUCKET: ${{ secrets.YC_BUCKET }}
+        with:
+          source: '.'
+          function_id: ${{ secrets.YC_FUNCTION_ID }}
+          runtime: 'python37'
+          entrypoint: 'main.handler'
+          environment: DEBUG=True
+          cloud_id: ${{ secrets.YC_CLOUD_ID }}
+          folder_id: ${{ secrets.YC_FOLDER_ID }}
+          token: ${{ secrets.YC_TOKEN }}
+          bucket: ${{ secrets.YC_BUCKET }}
