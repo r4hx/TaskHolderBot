@@ -1,5 +1,6 @@
 import json
 import os
+
 import boto3
 
 
@@ -20,7 +21,12 @@ def handler(event, context):
         'text': data['message']['text'],
         'chat_id': data['message']['chat']['id'],
     }
-    s3.put_object(Bucket=os.getenv('YC_BUCKET'), Key=data['message']['chat']['id'], Body=data['message']['text'], StorageClass='COLD')
+    s3.put_object(
+        Bucket=os.getenv('YC_BUCKET'),
+        Key=data['message']['chat']['id'],
+        Body=data['message']['text'],
+        StorageClass='COLD'
+    )
     return {
         "statusCode": 200,
         "headers": {'Content-Type': 'application/json'},
