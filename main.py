@@ -25,7 +25,6 @@ def handler(event, context):
         Bucket=os.getenv('YC_BUCKET'),
         Key=data['message']['chat']['id'],
         Body=data['message']['text'],
-        StorageClass='COLD'
     )
     return {
         "statusCode": 200,
@@ -35,9 +34,5 @@ def handler(event, context):
     }
 
 
-def main():
-    pass
-
-
 if __name__ == "__main__":
-    main()
+    pass

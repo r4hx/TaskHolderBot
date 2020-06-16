@@ -28,7 +28,7 @@ jobs:
         with:
           token: ${{ secrets.YC_TOKEN }}
           function_id: ${{ secrets.YC_FUNCTION_ID }}
-          runtime: 'python37'
+          runtime: 'python37-preview'
           entrypoint: 'main.handler'
           environment: DEBUG=True,USER_ACCESS_ID=${{ secrets.SERVICE_USER_ACCESS_ID }},USER_ACCESS_SECRET=${{ secrets.SERVICE_USER_ACCESS_SECRET }}
           source: '.'
