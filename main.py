@@ -2,6 +2,7 @@ import json
 
 
 def handler(event, context):
+    print(event)
     data = json.loads(event["body"])
     body = {
         'method': 'sendMessage',
