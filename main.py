@@ -3,7 +3,8 @@ import json
 
 def handler(event, context):
     print(event)
-    if 'queryStringParameters' in event and 'name' in event['queryStringParameters']:
+    if ('queryStringParameters' in event and 'name'
+            in event['queryStringParameters']):
         name = event['queryStringParameters']['name']
         return {
             "statusCode": 200,
