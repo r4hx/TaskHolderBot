@@ -15,7 +15,7 @@ class YandexCloudS3:
             region_name='ru-central1',
             endpoint_url='https://storage.yandexcloud.net'
         )
-        self.bucket = os.getenv('YC_BUCKET')
+        self.bucket = os.getenv('BUCKET')
 
     def put(self, key, body):
         self.key = key
