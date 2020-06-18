@@ -14,5 +14,5 @@ def handler(event, context):
             'Content-Type': 'application/json'
         },
         "body": json.dumps(body),
-        "isBase64Encoded": True,
+        "isBase64Encoded": False,
     }
