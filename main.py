@@ -33,7 +33,7 @@ def handler(event, context):
         'text': data['message']['text'],
         'chat_id': data['message']['chat']['id'],
     }
-    yc.put(body.get('chat_id', default='_'), body.get('text', default='_'))
+    yc.put(body.get('chat_id'), body.get('text'))
     return {
         "statusCode": 200,
         "headers": {
