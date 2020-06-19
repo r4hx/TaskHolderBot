@@ -68,4 +68,4 @@ class ObjectStorage:
             data['message']['from']['id'],
             "info.txt"
         )
-        return self.result.encode('utf-8')
+        return self.result.read().encode('utf-8')
