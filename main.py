@@ -34,10 +34,15 @@ def handler(event, context):
     if data['message']['text'] == '/start':
         yc.upload(data['message']['from']['id'], 'info.txt', '')
         yc.upload(data['message']['from']['id'], 'tasks.txt', '')
+        yc.update_user_info(data)
         return SendMessage(data['message']['from']['id'], messages['welcome'])
     else:
-        last_message = yc.get_user_info(data).get('last_message', None)
-        yc.update_user_info(data)
+        try:
+            last_message = yc.get_user_info(data)['last_message']
+        except KeyError:
+            last_message = None
+        finally:
+            yc.update_user_info(data)
         if data['message']['text'] == 'Добавить задачу':
             return SendMessage(data['message']['from']['id'], messages['task_add'])
         elif data['message']['text'] == 'Посмотреть список':
