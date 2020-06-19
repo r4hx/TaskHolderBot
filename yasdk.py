@@ -1,0 +1,47 @@
+import os
+
+import boto3
+
+
+class ObjectStorage:
+
+    def __init__(self):
+        self.session = boto3.session.Session()
+        self.s3 = self.session.client(
+            service_name='s3',
+            aws_access_key_id=os.getenv('USER_ACCESS_ID'),
+            aws_secret_access_key=os.getenv('USER_ACCESS_SECRET'),
+            region_name='ru-central1',
+            endpoint_url='https://storage.yandexcloud.net'
+        )
+        self.bucket = os.getenv('BUCKET')
+        self.users_dir = 'users'
+
+    def upload(self, user_id, filename, body):
+        self.user_id = user_id
+        self.filename = filename
+        self.body = body
+        self.result = self.s3.put_object(
+            Bucket=self.bucket,
+            Key="{}/{}/{}".format(self.users_dir, self.user_id, self.filename),
+            Body=self.body,
+        )
+        return self.result
+
+    def download(self, user_id, filename):
+        self.user_id = user_id
+        self.filename = filename
+        self.result = self.s3.get_object(
+            Bucket=self.bucket,
+            Key="{}/{}/{}".format(self.users_dir, self.user_id, self.filename)
+        )
+        return self.result
+
+    def delete(self, user_id, filename):
+        self.user_id = user_id
+        self.filename = filename
+        self.result = self.s3.delete_object(
+            Bucket=self.bucket,
+            Key="{}/{}/{}".format(self.users_dir, self.user_id, self.filename)
+        )
+        return self.result

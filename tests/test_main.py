@@ -16,11 +16,11 @@ class YandexBucketTestCase(unittest.TestCase):
     def setUpClass(cls) -> None:
         import warnings
         from uuid import uuid1
-        from main import YandexCloudS3
+        from yasdk import ObjectStorage
         warnings.simplefilter("ignore")
         cls.key_test = str(uuid1())
         cls.body_test = str(uuid1())
-        cls.yc = YandexCloudS3()
+        cls.yc = ObjectStorage()
 
     def test_01_write_file(self):
         self.result = self.yc.upload(self.key_test, self.body_test)
