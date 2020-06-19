@@ -84,7 +84,7 @@ class ObjectStorage:
                 self.result['Body'].read().decode('utf-8')
             )
         except:
-            pass
+            self.tasks = {}
         finally:
             self.tasks[self.data['update_id']] = self.data['message']['text']
             self.upload(
