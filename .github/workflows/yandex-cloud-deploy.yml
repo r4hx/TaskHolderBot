@@ -1,6 +1,5 @@
 name: Yandex.Cloud CI
 on: push
-
 jobs:
   linting:
     runs-on: ubuntu-latest
