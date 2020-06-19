@@ -38,7 +38,7 @@ def handler(event, context):
         return SendMessage(data['message']['from']['id'], messages['welcome'])
     else:
         try:
-            last_message = yc.get_user_info(data)['last_message'].decode('utf-8')
+            last_message = yc.get_user_info(data)['last_message']
         except KeyError:
             last_message = None
         finally:
