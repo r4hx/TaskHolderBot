@@ -26,14 +26,14 @@ class YandexCloudS3:
 
 
 def handler(event, context):
-    yc = YandexCloudS3()
+    # yc = YandexCloudS3()
     data = json.loads(event["body"])
     body = {
         'method': 'sendMessage',
         'text': data['message']['text'],
         'chat_id': data['message']['chat']['id'],
     }
-    yc.put(body.get('chat_id'), body.get('text'))
+    # yc.put(body.get('chat_id'), body.get('text'))
     return {
         "statusCode": 200,
         "headers": {
