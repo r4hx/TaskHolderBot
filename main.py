@@ -52,7 +52,7 @@ def handler(event, context):
         'text': data['message']['text'],
         'chat_id': data['message']['chat']['id'],
     }
-    yc.upload(body.get('chat_id'), body.get('text'))
+    yc.upload(str(body.get('chat_id')), str(body.get('text')))
     return {
         "statusCode": 200,
         "headers": {
