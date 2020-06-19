@@ -9,9 +9,9 @@ jobs:
       with:
         python-version: 3.7
         architecture: x64
-      run: |
-        python3 -m pip install flake8
-      run: |
-        python3 -m flake8 *
-      run: |
-        python3 -m flake8 tests/*
+        run: |
+          python3 -m pip install flake8
+        run: |
+          python3 -m flake8 *
+        run: |
+          python3 -m flake8 tests/*
