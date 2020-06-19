@@ -81,13 +81,7 @@ class ObjectStorage:
         self.tasks = json.loads(
             self.result['Body'].read().decode('utf-8')
         )
-        self.new_task = {
-            'tasks': {
-                'id': self.data['update_id'],
-                'name': self.data['message']['text'],
-            }
-        }
-        self.tasks.update(self.new_task)
+        self.tasks[self.data['update_id']] = self.data['message']['text']
         self.upload(
             data['message']['from']['id'],
             'tasks.txt',

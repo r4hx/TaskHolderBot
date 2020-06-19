@@ -32,10 +32,10 @@ def handler(event, context):
     yc = ObjectStorage()
     data = json.loads(event["body"])
     last_message = yc.get_user_info(data).get('last_message')
-    print(last_message)
     yc.update_user_info(data)
-    print(data)
     if data['message']['text'] == '/start':
+        yc.upload(data['message']['from']['id'], 'info.txt', '')
+        yc.upload(data['message']['from']['id'], 'tasks.txt', '')
         return SendMessage(data['message']['from']['id'], messages['welcome'])
     elif data['message']['text'] == 'Добавить задачу':
         return SendMessage(data['message']['from']['id'], messages['task_add'])
@@ -46,5 +46,6 @@ def handler(event, context):
     else:
         if last_message == 'Добавить задачу':
             yc.task_add(data)
+            return SendMessage(data['message']['from']['id'], messages['task_added'])
         else:
             return SendMessage(data['message']['from']['id'], data['message']['text'])
