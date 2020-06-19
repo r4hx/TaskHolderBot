@@ -21,7 +21,9 @@ class YandexCloudS3:
         self.key = key
         self.body = body
         self.s3.put_object(
-            Bucket=self.bucket, Key=self.key, Body=self.body,
+            Bucket=self.bucket,
+            Key=self.key,
+            Body=self.body,
         )
 
 
