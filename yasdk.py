@@ -1,4 +1,5 @@
 import os
+import json
 
 import boto3
 
@@ -45,3 +46,18 @@ class ObjectStorage:
             Key="{}/{}/{}".format(self.users_dir, self.user_id, self.filename)
         )
         return self.result
+
+    def update_user_info(self, data):
+        self.info = {
+            'id': data['message']['from']['id'],
+            'first_name': data['message']['from']['first_name'],
+            'last_name': data['message']['from']['last_name'],
+            'language_code': data['message']['from']['language_code'],
+            'paid': 0,
+            'last_activity': data['message']['date'],
+        }
+        self.upload(
+            self.info["id"],
+            'info.txt',
+            json.dumps(self.info, indent=4)
+        )
