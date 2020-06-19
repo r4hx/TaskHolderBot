@@ -11,6 +11,7 @@ def handler(event, context):
         'chat_id': data['message']['chat']['id'],
     }
     yc.upload(str(body.get('chat_id')), 'messages.txt', str(body.get('text')))
+    print(data)
     return {
         "statusCode": 200,
         "headers": {
