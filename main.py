@@ -3,10 +3,19 @@ from yasdk import ObjectStorage
 
 
 def SendMessage(chat_id, text):
+    keyboard = {
+        "keyboard":
+            [
+                ["Добавить", "Посмотреть"],
+                ["Удалить"],
+            ],
+        "one_time_keyboard": True
+    }
     body = {
         'method': 'sendMessage',
         'text': text,
         'chat_id': chat_id,
+        'reply_markup': json.dumps(keyboard),
     }
     return {
         "statusCode": 200,
