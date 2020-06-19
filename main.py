@@ -3,7 +3,7 @@ from yasdk import ObjectStorage
 from messages import messages
 
 
-def SendMessage(chat_id, text):
+def SendMessage(chat_id, text, last_message):
     keyboard = {
         "keyboard":
             [
@@ -14,7 +14,7 @@ def SendMessage(chat_id, text):
     }
     body = {
         'method': 'sendMessage',
-        'text': text,
+        'text': "{}\n\nПоследнее сообщение: {}".format(text, last_message),
         'chat_id': chat_id,
         'reply_markup': json.dumps(keyboard),
     }
@@ -35,7 +35,7 @@ def handler(event, context):
         yc.upload(data['message']['from']['id'], 'info.txt', '')
         yc.upload(data['message']['from']['id'], 'tasks.txt', '')
         yc.update_user_info(data)
-        return SendMessage(data['message']['from']['id'], messages['welcome'])
+        return SendMessage(data['message']['from']['id'], messages['welcome'], 'null')
     else:
         try:
             last_message = yc.get_user_info(data)['last_message']
@@ -44,14 +44,14 @@ def handler(event, context):
         finally:
             yc.update_user_info(data)
         if data['message']['text'] == 'Добавить задачу':
-            return SendMessage(data['message']['from']['id'], messages['task_add'])
+            return SendMessage(data['message']['from']['id'], messages['task_add'], last_message)
         elif data['message']['text'] == 'Посмотреть список':
-            return SendMessage(data['message']['from']['id'], messages['task_list'])
+            return SendMessage(data['message']['from']['id'], messages['task_list'], last_message)
         elif data['message']['text'] == 'Удалить':
-            return SendMessage(data['message']['from']['id'], messages['task_delete'])
+            return SendMessage(data['message']['from']['id'], messages['task_delete'], last_message)
         else:
             if last_message == 'Добавить задачу':
                 yc.task_add(data)
-                return SendMessage(data['message']['from']['id'], messages['task_added'])
+                return SendMessage(data['message']['from']['id'], messages['task_added'], last_message)
             else:
-                return SendMessage(data['message']['from']['id'], data['message']['text'])
+                return SendMessage(data['message']['from']['id'], data['message']['text'], last_message)
