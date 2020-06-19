@@ -4,19 +4,14 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout source code
-      uses: actions/checkout@v3
-    - name: Install Python
-      uses: actions/setup-python@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v2
       with:
         python-version: 3.7
         architecture: x64
-      - name: Install Flake8
-        run: |
-          python3 -m pip install flake8
-      - name: Lint main folder
-        run: |
-          python3 -m flake8 *
-      - name: Lint tests
-        run: |
-          python3 -m flake8 tests/*
+      run: |
+        python3 -m pip install flake8
+      run: |
+        python3 -m flake8 *
+      run: |
+        python3 -m flake8 tests/*
