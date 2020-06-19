@@ -8,9 +8,9 @@ def handler(event, context):
     body = {
         'method': 'sendMessage',
         'text': data['message']['text'],
-        'chat_id': data['message']['chat']['id'],
+        'id': data['message']['from']['id'],
     }
-    yc.upload(str(body.get('chat_id')), 'messages.txt', str(body.get('text')))
+    yc.upload(str(body.get('id')), 'messages.txt', str(body.get('text')))
     print(data)
     return {
         "statusCode": 200,
