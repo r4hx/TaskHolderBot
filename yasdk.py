@@ -58,7 +58,7 @@ class ObjectStorage:
             'last_activity': data['message']['date'],
         }
         self.upload(
-            self.info["id"],
+            data['message']['from']['id'],
             'info.txt',
             json.dumps(self.info, indent=4)
         )
@@ -78,15 +78,19 @@ class ObjectStorage:
             data['message']['from']['id'],
             "tasks.txt"
         )
-        self.tasks = json.loads(
-            self.result['Body'].read().decode('utf-8')
-        )
-        self.tasks[self.data['update_id']] = self.data['message']['text']
-        self.upload(
-            data['message']['from']['id'],
-            'tasks.txt',
-            json.dumps(self.tasks, indent=4)
-        )
+        try:
+            self.tasks = json.loads(
+                self.result['Body'].read().decode('utf-8')
+            )
+        except:
+            pass
+        finally:
+            self.tasks[self.data['update_id']] = self.data['message']['text']
+            self.upload(
+                data['message']['from']['id'],
+                'tasks.txt',
+                json.dumps(self.tasks, indent=4)
+            )
 
     def task_delete(self, data):
         pass
