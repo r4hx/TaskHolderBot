@@ -36,10 +36,10 @@ def handler(event, context):
     if data['message']['text'] == '/start':
         return SendMessage(data['message']['from']['id'], messages['welcome'])
     elif data['message']['text'] == 'Добавить задачу':
-        pass
+        return SendMessage(data['message']['from']['id'], messages['task_add'])
     elif data['message']['text'] == 'Посмотреть список':
-        pass
+        return SendMessage(data['message']['from']['id'], messages['task_list'])
     elif data['message']['text'] == 'Удалить':
-        pass
+        return SendMessage(data['message']['from']['id'], messages['task_delete'])
     else:
         return SendMessage(data['message']['from']['id'], data['message']['text'])
