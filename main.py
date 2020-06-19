@@ -31,9 +31,9 @@ def SendMessage(chat_id, text):
 def handler(event, context):
     yc = ObjectStorage()
     data = json.loads(event["body"])
-    last_state = yc.get_user_info(data)
-    print(last_state)
-    print(type(last_state))
+    last_message = yc.get_user_info(data).get('last_message')
+    print(last_message)
+    print(type(last_message))
     yc.update_user_info(data)
     print(data)
     if data['message']['text'] == '/start':
@@ -45,7 +45,7 @@ def handler(event, context):
     elif data['message']['text'] == 'Удалить':
         return SendMessage(data['message']['from']['id'], messages['task_delete'])
     else:
-        if last_state == 'Добавить задачу':
+        if last_message == 'Добавить задачу':
             pass
         else:
             return SendMessage(data['message']['from']['id'], data['message']['text'])
