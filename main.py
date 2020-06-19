@@ -36,7 +36,7 @@ def handler(event, context):
         yc.upload(data['message']['from']['id'], 'tasks.txt', '')
         return SendMessage(data['message']['from']['id'], messages['welcome'])
     else:
-        last_message = yc.get_user_info(data).get('last_message')
+        last_message = yc.get_user_info(data).get('last_message', 0)
         yc.update_user_info(data)
         if data['message']['text'] == 'Добавить задачу':
             return SendMessage(data['message']['from']['id'], messages['task_add'])
