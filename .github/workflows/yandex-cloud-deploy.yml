@@ -4,8 +4,10 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-python@v1
+    - name: Checkout source code
+      uses: actions/checkout@master
+    - name: Installing Python
+      uses: actions/setup-python@v1
       with:
         python-version: '3.7'
         architecture: 'x64'
