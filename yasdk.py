@@ -67,5 +67,5 @@ class ObjectStorage:
         self.result = self.download(
             data['message']['from']['id'],
             "info.txt"
-        ).read().decode('utf-8')
-        return self.result
+        )
+        return self.result['Body'].read().decode('utf-8')
