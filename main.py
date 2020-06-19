@@ -33,7 +33,6 @@ def handler(event, context):
     data = json.loads(event["body"])
     last_message = yc.get_user_info(data).get('last_message')
     print(last_message)
-    print(type(last_message))
     yc.update_user_info(data)
     print(data)
     if data['message']['text'] == '/start':

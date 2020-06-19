@@ -69,3 +69,30 @@ class ObjectStorage:
             "info.txt"
         )
         return json.loads(self.result['Body'].read().decode('utf-8'))
+
+    def task_list(self, data):
+        pass
+
+    def task_add(self, data):
+        self.result = self.download(
+            data['message']['from']['id'],
+            "tasks.txt"
+        )
+        self.tasks = json.loads(
+            self.result['Body'].read().decode('utf-8')
+        )
+        self.new_task = {
+            'tasks': {
+                'id': self.data['update_id'],
+                'name': self.data['message']['text'],
+            }
+        }
+        self.tasks.update(self.new_task)
+        self.upload(
+            data['message']['from']['id'],
+            'tasks.txt',
+            json.dumps(self.tasks, indent=4)
+        )
+
+    def task_delete(self, data):
+        pass
