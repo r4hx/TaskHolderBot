@@ -21,21 +21,25 @@ jobs:
     needs: [linting]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-python@v2
+    - name: Checkout source code
+      uses: actions/checkout@master
+    - name: Install Python
+      uses: actions/setup-python@v2
       with:
         python-version: '3.7'
         architecture: 'x64'
-    - name: Installing dependencies
-      run: python3 -m pip install -r requirements.txt
-    - name: Discovering test
-      run: python3 -m unittest discover -v tests/
+      - name: Installing dependencies
+        run: python3 -m pip install -r requirements.txt
+      - name: Discovering test
+        run: python3 -m unittest discover -v tests/
   deploy:
     needs: [linting, testing]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: goodsmileduck/yandex-serverless-action@master
+      - name: Checkout source code
+        uses: actions/checkout@master
+      - name: push code to yandex functions
+        uses: goodsmileduck/yandex-serverless-action@master
         with:
           token: ${{ secrets.YC_TOKEN }}
           function_id: ${{ secrets.YC_FUNCTION_ID }}
