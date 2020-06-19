@@ -16,7 +16,7 @@ class YandexBucketTestCase(unittest.TestCase):
     def setUpClass(cls) -> None:
         import warnings
         from uuid import uuid1
-        from test import YandexCloudS3
+        from main import YandexCloudS3
         warnings.simplefilter("ignore")
         cls.key_test = str(uuid1())
         cls.body_test = str(uuid1())
