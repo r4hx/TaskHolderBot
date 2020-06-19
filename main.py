@@ -31,8 +31,9 @@ def SendMessage(chat_id, text):
 def handler(event, context):
     yc = ObjectStorage()
     data = json.loads(event["body"])
-    last_state = yc.get_user_info(data).get('last_message', 0)
+    last_state = yc.get_user_info(data)
     print(last_state)
+    print(type(last_state))
     yc.update_user_info(data)
     print(data)
     if data['message']['text'] == '/start':
