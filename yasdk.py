@@ -54,6 +54,7 @@ class ObjectStorage:
             'last_name': data['message']['from']['last_name'],
             'language_code': data['message']['from']['language_code'],
             'paid': 0,
+            'last_message': data['message']['text'],
             'last_activity': data['message']['date'],
         }
         self.upload(
@@ -61,3 +62,10 @@ class ObjectStorage:
             'info.txt',
             json.dumps(self.info, indent=4)
         )
+
+    def get_user_info(self, data):
+        self.result = self.download(
+            data['message']['from']['id'],
+            "info.txt"
+        )
+        return self.result.encode('utf-8')
