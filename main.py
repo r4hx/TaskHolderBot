@@ -17,14 +17,31 @@ class YandexCloudS3:
         )
         self.bucket = os.getenv('BUCKET')
 
-    def put(self, key, body):
+    def upload(self, key, body):
         self.key = key
         self.body = body
-        self.s3.put_object(
+        self.result = self.s3.put_object(
             Bucket=self.bucket,
             Key=self.key,
             Body=self.body,
         )
+        return self.result
+
+    def download(self, key):
+        self.key = key
+        self.result = self.s3.get_object(
+            Bucket=self.bucket,
+            Key=self.key
+        )
+        return self.result
+
+    def delete(self, key):
+        self.key = key
+        self.result = self.s3.delete_object(
+            Bucket=self.bucket,
+            Key=self.key
+        )
+        return self.result
 
 
 def handler(event, context):
@@ -35,7 +52,7 @@ def handler(event, context):
         'text': data['message']['text'],
         'chat_id': data['message']['chat']['id'],
     }
-    yc.put('test', 'testing')
+    yc.upload(body.get('chat_id'), body.get('text'))
     return {
         "statusCode": 200,
         "headers": {
