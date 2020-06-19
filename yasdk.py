@@ -74,8 +74,9 @@ class ObjectStorage:
         pass
 
     def task_add(self, data):
+        self.data = data
         self.result = self.download(
-            data['message']['from']['id'],
+            self.data['message']['from']['id'],
             "tasks.txt"
         )
         try:
@@ -87,7 +88,7 @@ class ObjectStorage:
         finally:
             self.tasks[self.data['update_id']] = self.data['message']['text']
             self.upload(
-                data['message']['from']['id'],
+                self.data['message']['from']['id'],
                 'tasks.txt',
                 json.dumps(self.tasks, indent=4)
             )
