@@ -45,6 +45,6 @@ def handler(event, context):
         return SendMessage(data['message']['from']['id'], messages['task_delete'])
     else:
         if last_message == 'Добавить задачу':
-            pass
+            yc.task_add(data)
         else:
             return SendMessage(data['message']['from']['id'], data['message']['text'])
