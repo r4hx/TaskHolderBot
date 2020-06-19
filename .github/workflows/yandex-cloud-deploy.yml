@@ -4,11 +4,14 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v2
+    - name: Checkout source code
+      uses: actions/checkout@vv2.3.1
+    - name: Install Python
+      uses: actions/setup-python@v2
       with:
         python-version: 3.7
         architecture: x64
+        name: Install flake8 and run linting
         run: |
           python3 -m pip install flake8
           python3 -m flake8 *
