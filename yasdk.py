@@ -83,6 +83,7 @@ class ObjectStorage:
             self.tasks = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
+            #! GAVNO
         except:
             self.tasks = {}
         finally:
