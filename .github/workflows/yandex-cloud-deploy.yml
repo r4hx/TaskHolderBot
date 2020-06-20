@@ -1,4 +1,4 @@
-name: Yandex.Cloud CI
+name: YC CI
 on: push
 jobs:
   linting:
