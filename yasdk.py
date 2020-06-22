@@ -28,8 +28,8 @@ class ObjectStorage:
         self.result = self.s3.put_object(
             Bucket=self.bucket,
             Key="{}/{}/{}".format(self.users_dir, self.user_id, self.filename),
-            Body=self.body,
-        ).encode('utf8')
+            Body=self.body.encode('utf8'),
+        )
         return self.result
 
     def download(self, user_id, filename):
@@ -63,7 +63,7 @@ class ObjectStorage:
         self.upload(
             data['message']['from']['id'],
             'info.txt',
-            json.dumps(self.info, indent=4)
+            json.dumps(self.info, indent=4, ensure_ascii=False)
         )
 
     def get_user_info(self, data):
