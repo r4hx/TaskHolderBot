@@ -46,7 +46,11 @@ def handler(event, context):
         if data['message']['text'] == 'Добавить задачу':
             return SendMessage(data['message']['from']['id'], messages['task_add'], last_message)
         elif data['message']['text'] == 'Посмотреть список':
-            return SendMessage(yc.task_list(data), messages['task_list'], last_message)
+            return SendMessage(
+                data['message']['from']['id'],
+                "{} \n{}".format(messages['task_list'], yc.task_list(data)),
+                last_message
+            )
         elif data['message']['text'] == 'Удалить':
             return SendMessage(data['message']['from']['id'], messages['task_delete'], last_message)
         else:

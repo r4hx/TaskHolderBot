@@ -106,7 +106,7 @@ class ObjectStorage:
             self.text = self.data['message']['text']
             self.num_task = len(self.tasks) + 1
             self.tasks[self.num_task] = {
-                'timestamp': time.time(),
+                'timestamp': int(time.time()),
                 'text': self.text,
                 'active': True,
             }
