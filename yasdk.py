@@ -95,7 +95,7 @@ class ObjectStorage:
         try:
             self.result = self.download(self.user_id, self.filename)
             self.tasks = json.loads(
-                self.result['Body'].read().decode('utf-8')
+                self.result['Body'].read()
             )
         except ClientError as e:
             if e.response['Error']['Code'] == 'NoSuchKey':
@@ -103,10 +103,11 @@ class ObjectStorage:
             else:
                 print(e)
         finally:
+            self.text = self.data['message']['text'].decode('utf-8')
             self.num_task = len(self.tasks) + 1
             self.tasks[self.num_task] = {
                 'timestamp': time.time(),
-                'text': self.data['message']['text'],
+                'text': self.text,
                 'active': True,
             }
             self.upload(
