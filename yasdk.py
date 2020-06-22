@@ -104,7 +104,7 @@ class ObjectStorage:
                 print(e)
         finally:
             self.num_task = len(self.tasks) + 1
-            self.tasks[self.num] = {
+            self.tasks[self.num_task] = {
                 'timestamp': time.time(),
                 'text': self.data['message']['text'],
                 'active': True,
