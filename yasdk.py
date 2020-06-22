@@ -1,7 +1,9 @@
 import os
 import json
+import time
 
 import boto3
+from botocore.exceptions import ClientError
 
 
 class ObjectStorage:
@@ -75,21 +77,27 @@ class ObjectStorage:
 
     def task_add(self, data):
         self.data = data
-        self.result = self.download(
-            self.data['message']['from']['id'],
-            "tasks.txt"
-        )
+        self.user_id = self.data['message']['from']['id']
+        self.filename = "tasks.txt"
         try:
+            self.result = self.download(self.user_id, self.filename)
             self.tasks = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
-        except:
-            self.tasks = {}
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'NoSuchKey':
+                self.tasks = {}
+            else:
+                print(e)
         finally:
-            self.tasks[self.data['update_id']] = self.data['message']['text']
+            self.num_task = len(self.tasks) + 1
+            self.tasks[self.num] = {
+                'timestamp': time.time(),
+                'text': self.data['message']['text'],
+                'active': True,
+            }
             self.upload(
-                self.data['message']['from']['id'],
-                'tasks.txt',
+                self.user_id, self.filename,
                 json.dumps(self.tasks, indent=4)
             )
 
