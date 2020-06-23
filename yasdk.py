@@ -79,14 +79,14 @@ class ObjectStorage:
         self.filename = "tasks.txt"
         try:
             self.result = self.download(self.user_id, self.filename)
-            self.tasks = json.loads(
+            self.task_list = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
         except ClientError as e:
             if e.response['Error']['Code'] == 'NoSuchKey':
                 return messages.get("task_list_empty")
             else:
-                return self.tasks
+                return self.task_list
 
     def task_add(self, data):
         self.data = data
@@ -94,20 +94,20 @@ class ObjectStorage:
         self.filename = "tasks.txt"
         try:
             self.result = self.download(self.user_id, self.filename)
-            self.tasks = json.loads(
+            self.task_list = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
         except ClientError as e:
             if e.response['Error']['Code'] == 'NoSuchKey':
-                self.tasks = {}
+                self.task_list = {}
             else:
                 print(e)
         except AttributeError:
-            self.tasks = {}
+            self.task_list = {}
         finally:
             self.text = self.data['message']['text']
-            self.num_task = len(self.tasks) + 1
-            self.tasks[self.num_task] = {
+            self.num_task = len(self.task_list) + 1
+            self.task_list[self.num_task] = {
                 'timestamp': int(time.time()),
                 'text': self.text,
                 'active': True,
