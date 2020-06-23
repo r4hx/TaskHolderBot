@@ -62,5 +62,6 @@ def handler(event, context):
         elif data['message']['text'] == 'Удалить':
             return SendMessage(data['message']['from']['id'], messages.get('task_delete'), last_message)
         else:
-            yc.task_add(data)
-            return SendMessage(data['message']['from']['id'], messages.get('task_added'), last_message)
+            pass
+            # yc.task_add(data)
+            # return SendMessage(data['message']['from']['id'], messages.get('task_added'), last_message)
