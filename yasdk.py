@@ -102,6 +102,7 @@ class ObjectStorage:
                 print("nosuchkey")
                 self.task_list = {}
             else:
+                print("error")
                 print(e)
         finally:
             self.text = self.data['message']['text']
