@@ -102,6 +102,8 @@ class ObjectStorage:
                 self.tasks = {}
             else:
                 print(e)
+        except AttributeError:
+            self.tasks = {}
         finally:
             self.text = self.data['message']['text']
             self.num_task = len(self.tasks) + 1
