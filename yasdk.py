@@ -106,6 +106,8 @@ class ObjectStorage:
                 print(e)
         finally:
             self.text = self.data['message']['text']
+            print(type(self.task_list))
+            print(self.task_list)
             self.num_task = len(self.task_list) + 1
             self.task_list[self.num_task] = {
                 'timestamp': int(time.time()),
@@ -114,7 +116,7 @@ class ObjectStorage:
             }
             self.upload(
                 self.user_id, self.filename,
-                json.dumps(self.tasks, indent=4, ensure_ascii=False)
+                json.dumps(self.task_list, indent=4, ensure_ascii=False)
             )
 
     def task_delete(self, data):
