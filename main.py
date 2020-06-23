@@ -35,7 +35,7 @@ def handler(event, context):
         yc.upload(data['message']['from']['id'], 'info.txt', '')
         yc.upload(data['message']['from']['id'], 'tasks.txt', '')
         yc.update_user_info(data)
-        return SendMessage(data['message']['from']['id'], messages['welcome'], 'null')
+        return SendMessage(data['message']['from']['id'], messages.get('welcome'), 'null')
     else:
         try:
             last_message = yc.get_user_info(data)['last_message']
@@ -46,11 +46,19 @@ def handler(event, context):
         if data['message']['text'] == 'Добавить задачу':
             return SendMessage(data['message']['from']['id'], messages['task_add'], last_message)
         elif data['message']['text'] == 'Посмотреть список':
-            return SendMessage(
-                data['message']['from']['id'],
-                "{} \n{}".format(messages['task_list'], yc.task_list(data)),
-                last_message
-            )
+            task_list = yc.task_list(data)
+            if task_list is None:
+                return SendMessage(
+                    data['message']['from']['id'],
+                    messages.get("task_list_empty"),
+                    last_message,
+                )
+            else:
+                return SendMessage(
+                    data['message']['from']['id'],
+                    "{} \n{}".format(messages('task_list'), task_list),
+                    last_message
+                )
         elif data['message']['text'] == 'Удалить':
             return SendMessage(data['message']['from']['id'], messages['task_delete'], last_message)
         else:

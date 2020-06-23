@@ -82,9 +82,8 @@ class ObjectStorage:
             self.task_list = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
-        except ClientError as e:
-            if e.response['Error']['Code'] == 'NoSuchKey':
-                return messages.get("task_list_empty")
+        except ClientError:
+            pass
         return self.task_list
 
     def task_add(self, data):
