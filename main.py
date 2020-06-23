@@ -14,7 +14,7 @@ def SendMessage(chat_id, text, last_message):
     }
     body = {
         'method': 'sendMessage',
-        'text': "{}\n\nПоследнее сообщение: {}".format(text, last_message),
+        'text': "{}\n\nПредыдущее сообщение: {}".format(text, last_message),
         'chat_id': chat_id,
         'reply_markup': json.dumps(keyboard),
     }

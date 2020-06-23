@@ -3,7 +3,6 @@ import json
 import time
 
 import boto3
-from messages import messages
 from botocore.exceptions import ClientError
 
 
@@ -77,13 +76,15 @@ class ObjectStorage:
         self.data = data
         self.user_id = self.data['message']['from']['id']
         self.filename = "tasks.txt"
+        self.task_list = {}
         try:
             self.result = self.download(self.user_id, self.filename)
             self.task_list = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
-        except ClientError:
-            pass
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'NoSuchKey':
+                print("Created new tasks.txt file")
         return self.task_list
 
     def task_add(self, data):
