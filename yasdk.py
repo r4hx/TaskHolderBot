@@ -91,14 +91,15 @@ class ObjectStorage:
         self.data = data
         self.user_id = self.data['message']['from']['id']
         self.filename = "tasks.txt"
+        self.task_list = {}
         try:
             self.result = self.download(self.user_id, self.filename)
             self.task_list = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
-        except ClientError:
-            # if e.response['Error']['Code'] == 'NoSuchKey':
-            self.task_list = {}
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'NoSuchKey':
+                print("Created new tasks.txt file")
         finally:
             self.text = self.data['message']['text']
             self.num_task = len(self.task_list) + 1
