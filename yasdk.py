@@ -99,11 +99,10 @@ class ObjectStorage:
             )
         except ClientError as e:
             if e.response['Error']['Code'] == 'NoSuchKey':
+                print("nosuchkey")
                 self.task_list = {}
             else:
                 print(e)
-        except AttributeError:
-            self.task_list = {}
         finally:
             self.text = self.data['message']['text']
             self.num_task = len(self.task_list) + 1
