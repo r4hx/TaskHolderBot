@@ -92,18 +92,16 @@ class ObjectStorage:
         self.data = data
         self.user_id = self.data['message']['from']['id']
         self.filename = "tasks.txt"
-        self.task_list = dict()
         try:
             self.result = self.download(self.user_id, self.filename)
             self.task_list = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
         except ClientError as e:
-            if e.response['Error']['Code'] == 'NoSuchKey':
-                print("nosuchkey")
-            else:
-                print("error")
-                print(e)
+            # if e.response['Error']['Code'] == 'NoSuchKey':
+            #     print("nosuchkey")
+            self.task_list = {}
+            print(e)
         finally:
             self.text = self.data['message']['text']
             print(type(self.task_list))
