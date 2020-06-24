@@ -55,9 +55,6 @@ class User(ObjectStorage):
     def update_info(self, data):
         self.info = {
             'id': data['message']['from']['id'],
-            'first_name': data['message']['from']['first_name'],
-            'last_name': data['message']['from']['last_name'],
-            'language_code': data['message']['from']['language_code'],
             'paid': 0,
             'last_message': data['message']['text'],
             'last_activity': data['message']['date'],
@@ -71,7 +68,7 @@ class User(ObjectStorage):
     def get_info(self, data):
         self.result = self.download(
             data['message']['from']['id'],
-            "os.getenv('INFO_FILENAME')"
+            os.getenv('INFO_FILENAME'),
         )
         return json.loads(self.result['Body'].read().decode('utf-8'))
 
