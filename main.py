@@ -48,4 +48,4 @@ def handler(event, context):
                 task.add(data)
                 return send(from_id, text.get('task_added'), last_message)
     else:
-        return send(from_id, text.get('not_response'), last_message)
+        return send(from_id, text.get('not_response'))

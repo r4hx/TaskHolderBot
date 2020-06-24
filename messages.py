@@ -1,7 +1,7 @@
 import json
 
 
-def send(chat_id, text, last_message):
+def send(chat_id, text, last_message=''):
     keyboard = {
         "keyboard":
             [
