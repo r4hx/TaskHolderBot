@@ -87,7 +87,7 @@ class Task(ObjectStorage):
             )
         except ValueError:
             pass
-        return self.task_list
+        return json.dumps(self.task_list, indent=4, ensure_ascii=False)
 
     def add(self, data):
         self.data = data
