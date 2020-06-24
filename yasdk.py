@@ -85,9 +85,8 @@ class Task(ObjectStorage):
             self.task_list = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
-        except ClientError as e:
-            if e.response['Error']['Code'] == 'NoSuchKey':
-                print("Created new {} file".format(os.getenv('TASK_FILENAME')))
+        except ValueError:
+            pass
         return self.task_list
 
     def add(self, data):
@@ -100,9 +99,8 @@ class Task(ObjectStorage):
             self.task_list = json.loads(
                 self.result['Body'].read().decode('utf-8')
             )
-        except ClientError as e:
-            if e.response['Error']['Code'] == 'NoSuchKey':
-                print("Created new {} file".format(os.getenv('TASK_FILENAME')))
+        except ClientError:
+            pass
         finally:
             self.text = self.data['message']['text']
             self.num_task = len(self.task_list) + 1
