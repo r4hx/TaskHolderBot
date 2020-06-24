@@ -1,46 +1,49 @@
 import json
 import os
-from yasdk import ObjectStorage
+from yasdk import User, Task
 from messages import text, send
+
+user = User()
+task = Task()
 
 
 def handler(event, context):
-    yc = ObjectStorage()
     data = json.loads(event["body"])
     json.dumps(data, indent=4, ensure_ascii=False)
+    from_id = data['message']['from']['id']
     if data['message']['text'] == '/start':
-        yc.upload(data['message']['from']['id'], os.getenv('INFO_FILENAME'), '')
-        yc.upload(data['message']['from']['id'], os.getenv('INFO_FILENAME'), '')
-        yc.update_user_info(data)
-        return send(data['message']['from']['id'], text.get('welcome'), 'null')
+        user.upload(from_id, os.getenv('INFO_FILENAME'), '')
+        user.upload(from_id, os.getenv('TASK_FILENAME'), '')
+        user.update_info(data)
+        return send(from_id, text.get('welcome'), 'null')
     else:
         try:
-            last_message = yc.get_user_info(data)['last_message']
+            last_message = user.get_info(data)['last_message']
         except KeyError:
             last_message = None
         finally:
-            yc.update_user_info(data)
+            user.update_info(data)
         if data['message']['text'] == 'Добавить задачу':
-            return send(data['message']['from']['id'], text.get('task_add'), last_message)
+            return send(from_id, text.get('task_add'), last_message)
         elif data['message']['text'] == 'Посмотреть список':
-            task_list = yc.task_list(data)
+            task_list = task.all(data)
             if task_list is None:
                 return send(
-                    data['message']['from']['id'],
+                    from_id,
                     text.get("task_list_empty"),
                     last_message,
                 )
             else:
                 return send(
-                    data['message']['from']['id'],
+                    from_id,
                     "{} \n{}".format(text.get('task_list'), task_list),
                     last_message
                 )
         elif data['message']['text'] == 'Удалить':
-            return send(data['message']['from']['id'], text.get('task_delete'), last_message)
+            return send(from_id, text.get('task_delete'), last_message)
         else:
             if data['message']['text']:
-                yc.task_add(data)
-                return send(data['message']['from']['id'], text.get('task_added'), last_message)
+                task.add(data)
+                return send(from_id, text.get('task_added'), last_message)
             else:
-                return send(data['message']['from']['id'], text.get('not_response'), last_message)
+                return send(from_id, text.get('not_response'), last_message)
