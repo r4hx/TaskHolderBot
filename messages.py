@@ -1,4 +1,32 @@
-messages = {
+import json
+
+
+def send(chat_id, text, last_message):
+    keyboard = {
+        "keyboard":
+            [
+                ["Добавить задачу", "Посмотреть список"],
+                ["Удалить"],
+            ],
+        "one_time_keyboard": True
+    }
+    body = {
+        'method': 'sendMessage',
+        'text': "{}\n\nПредыдущее сообщение: {}".format(text, last_message),
+        'chat_id': chat_id,
+        'reply_markup': json.dumps(keyboard),
+    }
+    return {
+        "statusCode": 200,
+        "headers": {
+            'Content-Type': 'application/json'
+        },
+        "body": json.dumps(body),
+        "isBase64Encoded": False,
+    }
+
+
+text = {
     'welcome': "Привет. Я трекер задач. Моя основная цель - победить твою прокрастинацию. \
             \n\nДавай составим список задач и посмотрим что из этого выйдет?",
     'task_add': "Что нужно сделать?",

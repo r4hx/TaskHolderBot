@@ -1,41 +1,18 @@
 import json
+import os
 from yasdk import ObjectStorage
-from messages import messages
-
-
-def SendMessage(chat_id, text, last_message):
-    keyboard = {
-        "keyboard":
-            [
-                ["Добавить задачу", "Посмотреть список"],
-                ["Удалить"],
-            ],
-        "one_time_keyboard": True
-    }
-    body = {
-        'method': 'sendMessage',
-        'text': "{}\n\nПредыдущее сообщение: {}".format(text, last_message),
-        'chat_id': chat_id,
-        'reply_markup': json.dumps(keyboard),
-    }
-    return {
-        "statusCode": 200,
-        "headers": {
-            'Content-Type': 'application/json'
-        },
-        "body": json.dumps(body),
-        "isBase64Encoded": False,
-    }
+from messages import text, send
 
 
 def handler(event, context):
     yc = ObjectStorage()
     data = json.loads(event["body"])
+    json.dumps(data, indent=4, ensure_ascii=False)
     if data['message']['text'] == '/start':
-        yc.upload(data['message']['from']['id'], 'info.txt', '')
-        yc.upload(data['message']['from']['id'], 'tasks.txt', '')
+        yc.upload(data['message']['from']['id'], os.getenv('INFO_FILENAME'), '')
+        yc.upload(data['message']['from']['id'], os.getenv('INFO_FILENAME'), '')
         yc.update_user_info(data)
-        return SendMessage(data['message']['from']['id'], messages.get('welcome'), 'null')
+        return send(data['message']['from']['id'], text.get('welcome'), 'null')
     else:
         try:
             last_message = yc.get_user_info(data)['last_message']
@@ -44,26 +21,26 @@ def handler(event, context):
         finally:
             yc.update_user_info(data)
         if data['message']['text'] == 'Добавить задачу':
-            return SendMessage(data['message']['from']['id'], messages.get('task_add'), last_message)
+            return send(data['message']['from']['id'], text.get('task_add'), last_message)
         elif data['message']['text'] == 'Посмотреть список':
             task_list = yc.task_list(data)
             if task_list is None:
-                return SendMessage(
+                return send(
                     data['message']['from']['id'],
-                    messages.get("task_list_empty"),
+                    text.get("task_list_empty"),
                     last_message,
                 )
             else:
-                return SendMessage(
+                return send(
                     data['message']['from']['id'],
-                    "{} \n{}".format(messages.get('task_list'), task_list),
+                    "{} \n{}".format(text.get('task_list'), task_list),
                     last_message
                 )
         elif data['message']['text'] == 'Удалить':
-            return SendMessage(data['message']['from']['id'], messages.get('task_delete'), last_message)
+            return send(data['message']['from']['id'], text.get('task_delete'), last_message)
         else:
             if data['message']['text']:
                 yc.task_add(data)
-                return SendMessage(data['message']['from']['id'], messages.get('task_added'), last_message)
+                return send(data['message']['from']['id'], text.get('task_added'), last_message)
             else:
-                return SendMessage(data['message']['from']['id'], messages.get('not_response'), last_message)
+                return send(data['message']['from']['id'], text.get('not_response'), last_message)

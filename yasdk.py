@@ -49,7 +49,10 @@ class ObjectStorage:
         )
         return self.result
 
-    def update_user_info(self, data):
+
+class User(ObjectStorage):
+
+    def update_info(self, data):
         self.info = {
             'id': data['message']['from']['id'],
             'first_name': data['message']['from']['first_name'],
@@ -61,21 +64,24 @@ class ObjectStorage:
         }
         self.upload(
             data['message']['from']['id'],
-            'info.txt',
+            os.getenv('INFO_FILENAME'),
             json.dumps(self.info, indent=4, ensure_ascii=False)
         )
 
-    def get_user_info(self, data):
+    def get_info(self, data):
         self.result = self.download(
             data['message']['from']['id'],
-            "info.txt"
+            "os.getenv('INFO_FILENAME')"
         )
         return json.loads(self.result['Body'].read().decode('utf-8'))
 
-    def task_list(self, data):
+
+class Task(ObjectStorage):
+
+    def all(self, data):
         self.data = data
         self.user_id = self.data['message']['from']['id']
-        self.filename = "tasks.txt"
+        self.filename = os.getenv('TASK_FILENAME')
         self.task_list = {}
         try:
             self.result = self.download(self.user_id, self.filename)
@@ -84,13 +90,13 @@ class ObjectStorage:
             )
         except ClientError as e:
             if e.response['Error']['Code'] == 'NoSuchKey':
-                print("Created new tasks.txt file")
+                print("Created new {} file".format(os.getenv('TASK_FILENAME')))
         return self.task_list
 
-    def task_add(self, data):
+    def add(self, data):
         self.data = data
         self.user_id = self.data['message']['from']['id']
-        self.filename = "tasks.txt"
+        self.filename = os.getenv('TASK_FILENAME')
         self.task_list = {}
         try:
             self.result = self.download(self.user_id, self.filename)
@@ -99,7 +105,7 @@ class ObjectStorage:
             )
         except ClientError as e:
             if e.response['Error']['Code'] == 'NoSuchKey':
-                print("Created new tasks.txt file")
+                print("Created new {} file".format(os.getenv('TASK_FILENAME')))
         finally:
             self.text = self.data['message']['text']
             self.num_task = len(self.task_list) + 1
@@ -114,5 +120,5 @@ class ObjectStorage:
                 json.dumps(self.task_list, indent=4, ensure_ascii=False)
             )
 
-    def task_delete(self, data):
+    def delete(self, data):
         pass
